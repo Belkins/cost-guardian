@@ -1,0 +1,76 @@
+{
+  "last_updated": "2025-01-12",
+  "currency": "USD",
+  "unit": "per_million_tokens",
+  "models": {
+    "claude-opus-4-5": {
+      "input": 5.00,
+      "output": 25.00,
+      "cache_write_5m": 6.25,
+      "cache_write_1h": 10.00,
+      "cache_read": 0.50
+    },
+    "claude-opus-4-1": {
+      "input": 15.00,
+      "output": 75.00,
+      "cache_write_5m": 18.75,
+      "cache_write_1h": 30.00,
+      "cache_read": 1.50
+    },
+    "claude-opus-4": {
+      "input": 15.00,
+      "output": 75.00,
+      "cache_write_5m": 18.75,
+      "cache_write_1h": 30.00,
+      "cache_read": 1.50
+    },
+    "claude-sonnet-4-5": {
+      "input": 3.00,
+      "output": 15.00,
+      "cache_write_5m": 3.75,
+      "cache_write_1h": 6.00,
+      "cache_read": 0.30
+    },
+    "claude-sonnet-4": {
+      "input": 3.00,
+      "output": 15.00,
+      "cache_write_5m": 3.75,
+      "cache_write_1h": 6.00,
+      "cache_read": 0.30
+    },
+    "claude-haiku-4-5": {
+      "input": 1.00,
+      "output": 5.00,
+      "cache_write_5m": 1.25,
+      "cache_write_1h": 2.00,
+      "cache_read": 0.10
+    },
+    "claude-haiku-3-5": {
+      "input": 0.80,
+      "output": 4.00,
+      "cache_write_5m": 1.00,
+      "cache_write_1h": 1.60,
+      "cache_read": 0.08
+    },
+    "claude-haiku-3": {
+      "input": 0.25,
+      "output": 1.25,
+      "cache_write_5m": 0.30,
+      "cache_write_1h": 0.50,
+      "cache_read": 0.03
+    }
+  },
+  "tool_overheads": {
+    "bash": 245,
+    "text_editor": 700,
+    "write": 700,
+    "edit": 700,
+    "tool_system_prompt_auto": 346,
+    "tool_system_prompt_any": 313
+  },
+  "special_costs": {
+    "web_search_per_search": 0.01,
+    "code_execution_per_hour": 0.05
+  },
+  "default_model": "claude-sonnet-4"
+}

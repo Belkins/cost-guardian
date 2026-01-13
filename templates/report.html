@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost Guardian Report</title>
+  <style>
+    :root {
+      --color-primary: #6366f1;
+      --color-success: #22c55e;
+      --color-warning: #eab308;
+      --color-danger: #ef4444;
+      --color-gray-50: #f9fafb;
+      --color-gray-100: #f3f4f6;
+      --color-gray-200: #e5e7eb;
+      --color-gray-500: #6b7280;
+      --color-gray-700: #374151;
+      --color-gray-900: #111827;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .grade-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 30px 0;
+    }
+
+    .grade {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.2);
+      border: 4px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .grade-aplus, .grade-a { background: rgba(34, 197, 94, 0.3); border-color: #22c55e; }
+    .grade-b { background: rgba(132, 204, 22, 0.3); border-color: #84cc16; }
+    .grade-c { background: rgba(234, 179, 8, 0.3); border-color: #eab308; }
+    .grade-d { background: rgba(249, 115, 22, 0.3); border-color: #f97316; }
+    .grade-f { background: rgba(239, 68, 68, 0.3); border-color: #ef4444; }
+
+    .score {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 10px;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--color-gray-50);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-gray-900);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--color-gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-gray-700);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--color-gray-200);
+    }
+
+    .breakdown-bar {
+      height: 24px;
+      background: var(--color-gray-100);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      margin-bottom: 12px;
+    }
+
+    .breakdown-segment {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: white;
+      min-width: 40px;
+    }
+
+    .segment-input { background: #6366f1; }
+    .segment-output { background: #8b5cf6; }
+    .segment-overhead { background: #a78bfa; }
+
+    .breakdown-legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--color-gray-700);
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .operations-list {
+      background: var(--color-gray-50);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .operation-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .operation-item:last-child {
+      border-bottom: none;
+    }
+
+    .operation-tool {
+      font-weight: 600;
+      color: var(--color-gray-700);
+    }
+
+    .operation-cost {
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .footer {
+      background: var(--color-gray-50);
+      padding: 20px 40px;
+      text-align: center;
+      border-top: 1px solid var(--color-gray-200);
+    }
+
+    .footer a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: var(--color-gray-500);
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .header {
+        padding: 30px 20px;
+      }
+
+      .content {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Cost Guardian Report</h1>
+      <p>Generated on {{GENERATED_DATE}}</p>
+
+      <div class="grade-container">
+        <div class="grade grade-{{GRADE_CLASS}}">{{GRADE}}</div>
+      </div>
+      <div class="score">Efficiency Score: {{SCORE}}/100</div>
+    </div>
+
+    <div class="content">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">${{TOTAL_COST}}</div>
+          <div class="stat-label">Total Cost</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{TOTAL_TOKENS}}</div>
+          <div class="stat-label">Tokens Used</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{OPERATIONS}}</div>
+          <div class="stat-label">Operations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{DURATION}}</div>
+          <div class="stat-label">Duration</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Token Distribution</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-segment segment-input" style="width: {{INPUT_PERCENT}}%">{{INPUT_PERCENT}}%</div>
+          <div class="breakdown-segment segment-output" style="width: {{OUTPUT_PERCENT}}%">{{OUTPUT_PERCENT}}%</div>
+          <div class="breakdown-segment segment-overhead" style="width: {{OVERHEAD_PERCENT}}%">{{OVERHEAD_PERCENT}}%</div>
+        </div>
+        <div class="breakdown-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #6366f1;"></div>
+            <span>Input ({{INPUT_TOKENS}})</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #8b5cf6;"></div>
+            <span>Output ({{OUTPUT_TOKENS}})</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #a78bfa;"></div>
+            <span>Overhead ({{OVERHEAD_TOKENS}})</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Top Operations by Cost</div>
+        <div class="operations-list">
+          {{OPERATIONS_LIST}}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Generated by <a href="https://github.com/cost-guardian/cost-guardian">Cost Guardian</a></p>
+      <p>Real-time budget enforcement for Claude Code</p>
+    </div>
+  </div>
+</body>
+</html>

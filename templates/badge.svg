@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="{{WIDTH}}" height="20" role="img" aria-label="Claude Code: {{GRADE}} Efficiency">
+  <title>Claude Code: {{GRADE}} Efficiency</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="{{WIDTH}}" height="20" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="80" height="20" fill="#555"/>
+    <rect x="80" width="{{RIGHT_WIDTH}}" height="20" fill="{{COLOR}}"/>
+    <rect width="{{WIDTH}}" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <text aria-hidden="true" x="400" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)">Claude Code</text>
+    <text x="400" y="140" transform="scale(.1)" fill="#fff">Claude Code</text>
+    <text aria-hidden="true" x="{{TEXT_X}}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)">{{LABEL}}</text>
+    <text x="{{TEXT_X}}" y="140" transform="scale(.1)" fill="#fff">{{LABEL}}</text>
+  </g>
+</svg>

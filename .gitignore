@@ -1,0 +1,48 @@
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Claude Code local data (user-specific)
+# Note: The plugin creates data in ~/.claude/cost-guardian/, not in the repo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Test output
+coverage/
+.nyc_output/
+
+# Build artifacts (if any in future)
+dist/
+build/
+
+# Dependencies (if any in future)
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Plan files (development only)
+plan.md

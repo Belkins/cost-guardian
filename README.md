@@ -358,11 +358,19 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
+## Author
+
+Created by [Vladyslav Podoliako](https://vladyslavpodoliako.com/)
+
+- **Newsletter**: [Vlad's Newsletter](https://www.vladsnewsletter.com/) - AI, startups, and building in public
+- **Website**: [vladyslavpodoliako.com](https://vladyslavpodoliako.com/)
+
+---
+
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Belkins/cost-guardian/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/Belkins/cost-guardian/discussions)
-- **Twitter**: [@cost_guardian](https://twitter.com/cost_guardian)
 
 ---
 

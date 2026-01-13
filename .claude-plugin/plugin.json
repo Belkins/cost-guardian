@@ -4,9 +4,9 @@
   "description": "Real-time budget enforcement, cost tracking, and optimization for Claude Code. Track spending, set limits, get warnings before expensive operations.",
   "author": {
     "name": "Cost Guardian",
-    "url": "https://github.com/cost-guardian/cost-guardian"
+    "url": "https://github.com/Belkins/cost-guardian"
   },
-  "repository": "https://github.com/cost-guardian/cost-guardian",
+  "repository": "https://github.com/Belkins/cost-guardian",
   "license": "MIT",
   "keywords": [
     "cost",

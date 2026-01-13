@@ -195,7 +195,7 @@ estimate_tool_cost() {
 # Format cost for display
 format_cost() {
   local cost="$1"
-  printf "$%.2f" "$cost"
+  printf "\$%.2f" "$cost"
 }
 
 # Get special costs (web search, etc.)

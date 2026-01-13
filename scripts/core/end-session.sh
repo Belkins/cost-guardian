@@ -11,6 +11,28 @@ PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." &
 source "${PLUGIN_ROOT}/scripts/utils/storage.sh"
 source "${PLUGIN_ROOT}/scripts/utils/pricing.sh"
 
+# Get ISO 8601 timestamp (portable for macOS and Linux)
+get_iso_timestamp() {
+  if date --version >/dev/null 2>&1; then
+    # GNU date (Linux)
+    date -Iseconds
+  else
+    # BSD date (macOS)
+    date -u +"%Y-%m-%dT%H:%M:%SZ"
+  fi
+}
+
+# Format number with thousand separators (portable)
+format_number() {
+  local num="$1"
+  # Use printf with LC_NUMERIC if available, otherwise use sed
+  if printf "%'d" 0 >/dev/null 2>&1; then
+    printf "%'d" "$num"
+  else
+    echo "$num" | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'
+  fi
+}
+
 # Read hook input from stdin
 input=$(cat)
 
@@ -24,7 +46,7 @@ if [[ "$session_data" == "{}" ]]; then
 fi
 
 # Finalize session
-end_time=$(date -Iseconds)
+end_time=$(get_iso_timestamp)
 session_data=$(echo "$session_data" | jq --arg end "$end_time" '.ended_at = $end')
 
 # Calculate efficiency metrics
@@ -39,27 +61,38 @@ efficiency_score=50  # Default
 if (( operation_count > 0 )); then
   # Token efficiency (output/input ratio) - higher is better, up to a point
   if (( input_tokens > 0 )); then
-    ratio=$(echo "scale=2; $output_tokens / $input_tokens" | bc)
-    token_score=$(echo "scale=0; $ratio * 200" | bc 2>/dev/null || echo "50")
-    if (( token_score > 100 )); then token_score=100; fi
+    # Calculate ratio and multiply by 200, then truncate to integer
+    token_score=$(echo "scale=0; ($output_tokens * 200 / $input_tokens)" | bc 2>/dev/null || echo "50")
+    # Remove any decimal parts and cap at 100
+    token_score=${token_score%%.*}
+    if [[ -z "$token_score" ]] || [[ "$token_score" -lt 0 ]]; then token_score=50; fi
+    if [[ "$token_score" -gt 100 ]]; then token_score=100; fi
   else
     token_score=50
   fi
 
   # Average tokens per operation
-  avg_tokens=$(echo "scale=0; ($input_tokens + $output_tokens) / $operation_count" | bc)
+  avg_tokens=$(echo "scale=0; ($input_tokens + $output_tokens) / $operation_count" | bc 2>/dev/null || echo "0")
+  avg_tokens=${avg_tokens%%.*}
+  if [[ -z "$avg_tokens" ]]; then avg_tokens=0; fi
 
   # Simple scoring: token efficiency
   efficiency_score=$token_score
 fi
 
+# Ensure efficiency_score is a valid integer
+efficiency_score=${efficiency_score%%.*}
+if [[ -z "$efficiency_score" ]] || ! [[ "$efficiency_score" =~ ^[0-9]+$ ]]; then
+  efficiency_score=50
+fi
+
 # Determine grade
 grade="C"
-if (( efficiency_score >= 95 )); then grade="A+"
-elif (( efficiency_score >= 85 )); then grade="A"
-elif (( efficiency_score >= 70 )); then grade="B"
-elif (( efficiency_score >= 50 )); then grade="C"
-elif (( efficiency_score >= 30 )); then grade="D"
+if [[ "$efficiency_score" -ge 95 ]]; then grade="A+"
+elif [[ "$efficiency_score" -ge 85 ]]; then grade="A"
+elif [[ "$efficiency_score" -ge 70 ]]; then grade="B"
+elif [[ "$efficiency_score" -ge 50 ]]; then grade="C"
+elif [[ "$efficiency_score" -ge 30 ]]; then grade="D"
 else grade="F"
 fi
 
@@ -81,8 +114,8 @@ add_to_history "$total_cost"
 
 # Format values for display
 formatted_cost=$(printf "%.2f" "$total_cost")
-formatted_input=$(printf "%'d" "$input_tokens")
-formatted_output=$(printf "%'d" "$output_tokens")
+formatted_input=$(format_number "$input_tokens")
+formatted_output=$(format_number "$output_tokens")
 
 # Generate summary message
 cat <<EOF

@@ -24,11 +24,22 @@ model="${CLAUDE_MODEL:-claude-sonnet-4}"
 # Ensure data directories exist
 ensure_data_dirs
 
+# Get ISO 8601 timestamp (portable for macOS and Linux)
+get_iso_timestamp() {
+  if date --version >/dev/null 2>&1; then
+    # GNU date (Linux)
+    date -Iseconds
+  else
+    # BSD date (macOS)
+    date -u +"%Y-%m-%dT%H:%M:%SZ"
+  fi
+}
+
 # Initialize session data
 session_data=$(cat <<EOF
 {
   "session_id": "$session_id",
-  "started_at": "$(date -Iseconds)",
+  "started_at": "$(get_iso_timestamp)",
   "ended_at": null,
   "project_dir": "$cwd",
   "model": "$model",

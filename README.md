@@ -36,7 +36,7 @@ Existing cost tracking tools are **external apps** (menu bar apps, CLI tools). C
 Or install directly from GitHub:
 
 ```bash
-/plugin install https://github.com/your-username/cost-guardian
+/plugin install https://github.com/Belkins/cost-guardian
 ```
 
 ### First Use
@@ -330,7 +330,7 @@ Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/cost-guardian.git
+git clone https://github.com/Belkins/cost-guardian.git
 
 # Install for development
 cd cost-guardian
@@ -360,8 +360,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/cost-guardian/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/cost-guardian/discussions)
+- **Issues**: [GitHub Issues](https://github.com/Belkins/cost-guardian/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Belkins/cost-guardian/discussions)
 - **Twitter**: [@cost_guardian](https://twitter.com/cost_guardian)
 
 ---

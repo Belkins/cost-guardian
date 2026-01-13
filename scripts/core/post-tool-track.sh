@@ -11,6 +11,17 @@ PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." &
 source "${PLUGIN_ROOT}/scripts/utils/storage.sh"
 source "${PLUGIN_ROOT}/scripts/utils/pricing.sh"
 
+# Get ISO 8601 timestamp (portable for macOS and Linux)
+get_iso_timestamp() {
+  if date --version >/dev/null 2>&1; then
+    # GNU date (Linux)
+    date -Iseconds
+  else
+    # BSD date (macOS)
+    date -u +"%Y-%m-%dT%H:%M:%SZ"
+  fi
+}
+
 # Read hook input from stdin
 input=$(cat)
 
@@ -55,7 +66,7 @@ if [[ "$tool_name" == "WebSearch" || "$tool_name" == "websearch" ]]; then
 fi
 
 # Create operation record
-timestamp=$(date -Iseconds)
+timestamp=$(get_iso_timestamp)
 operation=$(cat <<EOF
 {
   "timestamp": "$timestamp",
